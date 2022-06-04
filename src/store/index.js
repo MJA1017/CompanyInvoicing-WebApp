@@ -1,5 +1,12 @@
 import { createStore } from "vuex";
 import db from "../firebase/firebaseInit";
+import router from '../router'
+import { auth } from '../firebase/firebaseInit'
+import { 
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut 
+} from 'firebase/auth'
 
 export default createStore({
   state: {
@@ -9,6 +16,7 @@ export default createStore({
     invoicesLoaded: null,
     currentInvoiceArray: null,
     editInvoice: null,
+    user: null
   },
   mutations: {
     TOGGLE_INVOICE(state) {
@@ -51,6 +59,14 @@ export default createStore({
         }
       });
     },
+
+    SET_USER (state, user) {
+      state.user = user
+    },
+
+    CLEAR_USER (state) {
+      state.user = null
+    }
   },
   actions: {
     async GET_INVOICES({ commit, state }) {
@@ -88,6 +104,8 @@ export default createStore({
       });
       commit("INVOICES_LOADED");
     },
+
+
     async UPDATE_INVOICE({ commit, dispatch }, { docId, routeId }) {
       commit("DELETE_INVOICE", docId);
       await dispatch("GET_INVOICES");
@@ -95,11 +113,15 @@ export default createStore({
       commit("TOGGLE_EDIT_INVOICE");
       commit("SET_CURRENT_INVOICE", routeId);
     },
+
+
     async DELETE_INVOICE({ commit }, docId) {
       const getInvoice = db.collection("invoices").doc(docId);
       await getInvoice.delete();
       commit("DELETE_INVOICE", docId);
     },
+
+
     async UPDATE_STATUS_TO_PAID({ commit }, docId) {
       const getInvoice = db.collection("invoices").doc(docId);
       await getInvoice.update({
@@ -108,6 +130,8 @@ export default createStore({
       });
       commit("UPDATE_STATUS_TO_PAID", docId);
     },
+
+
     async UPDATE_STATUS_TO_PENDING({ commit }, docId) {
       const getInvoice = db.collection("invoices").doc(docId);
       await getInvoice.update({
@@ -117,6 +141,86 @@ export default createStore({
       });
       commit("UPDATE_STATUS_TO_PENDING", docId);
     },
+
+    async login ({ commit }, details) {
+      const { email, password } = details
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password)
+      } catch (error) {
+        switch(error.code) {
+          case 'auth/user-not-found':
+            alert("User not found")
+            break
+          case 'auth/wrong-password':
+            alert("Wrong password")
+            break
+          default:
+            alert("Something went wrong")
+        }
+
+        return
+      }
+
+      commit('SET_USER', auth.currentUser)
+
+      router.push('/')
+    },
+
+    async register ({ commit}, details) {
+      const { email, password } = details
+
+     try {
+       await createUserWithEmailAndPassword(auth, email, password)
+     } catch (error) {
+       switch(error.code) {
+         case 'auth/email-already-in-use':
+           alert("Email already in use")
+           break
+         case 'auth/invalid-email':
+           alert("Invalid email")
+           break
+         case 'auth/operation-not-allowed':
+           alert("Operation not allowed")
+           break
+         case 'auth/weak-password':
+           alert("Weak password")
+           break
+         default:
+           alert(error.code)
+       }
+
+       return
+     }
+
+     commit('SET_USER', auth.currentUser)
+
+     router.push('/')
+   },
+
+    async logout ({ commit }) {
+      await signOut(auth)
+
+      commit('CLEAR_USER')
+
+      router.push('/login')
+    },
+
+    fetchUser ({ commit }) {
+      auth.onAuthStateChanged(async user => {
+        if (user === null) {
+          commit('CLEAR_USER')
+        } else {
+          commit('SET_USER', user)
+
+          if (router.isReady() && router.currentRoute.value.path === '/login') {
+            router.push('/')
+          }
+        }
+      })
+    }
+
+
   },
   modules: {},
 });

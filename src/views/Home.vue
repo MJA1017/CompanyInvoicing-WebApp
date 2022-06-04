@@ -19,12 +19,19 @@
             <li @click="filteredInvoices">Clear Filter</li>
           </ul>
         </div>
+
+        <input type="text" v-model="test" placeholder="Search by InvoiceID" />
+
         <div @click="newInvoice" class="button flex">
           <div class="inner-button flex">
             <img src="@/assets/icon-plus.svg" alt="" />
           </div>
           <span>New Invoice</span>
         </div>
+
+        <button class="button flex" @click="$store.dispatch('logout')">Logout</button>
+
+
       </div>
     </div>
     <!-- Invoices -->
@@ -42,14 +49,21 @@
 <script>
 import Invoice from "../components/Invoice";
 import { mapMutations, mapState } from "vuex";
+// import { ref } from "vue";
+
+// let input = ref("");
+
 export default {
   name: "Home",
+
   data() {
     return {
       filterMenu: null,
       filteredInvoice: null,
+      test: ""
     };
   },
+
   components: {
     Invoice,
   },
@@ -86,7 +100,8 @@ export default {
           return invoice.invoicePaid === true;
         }
         return invoice;
-      });
+      }).filter((invoice) =>invoice.invoiceId.toUpperCase().includes(this.test.toUpperCase()));
+      
     },
   },
 };
@@ -191,6 +206,19 @@ export default {
       font-weight: 300;
       margin-top: 16px;
     }
+  }
+  input {
+    display: block;
+    width: 300px;
+    margin: 20px auto;
+    padding: 10px 45px;
+    background: white url("../assets/search-icon.svg") no-repeat 15px center;
+    background-size: 15px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+      rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   }
 }
 </style>

@@ -1,15 +1,19 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import { getAuth } from "firebase/auth"
 
-var firebaseConfig = {
-  apiKey: "AIzaSyBtX0zbq8OWFoczz-D55IEQ-zQxcmjZ6BU",
-  authDomain: "invoice-app-yt.firebaseapp.com",
-  projectId: "invoice-app-yt",
-  storageBucket: "invoice-app-yt.appspot.com",
-  messagingSenderId: "638958069840",
-  appId: "1:638958069840:web:2a359ba0cf4b8c7b648955",
+const firebaseConfig = {
+  apiKey: "AIzaSyBtkLY4ojXMDmnfbcqQLLNsbgquHmhjXoU",
+  authDomain: "invoice-app-binus.firebaseapp.com",
+  projectId: "invoice-app-binus",
+  storageBucket: "invoice-app-binus.appspot.com",
+  messagingSenderId: "1019782123562",
+  appId: "1:1019782123562:web:4f49ee62e6f4db97cf3353"
 };
 
+
 const firebaseApp = firebase.initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp)
 
 export default firebaseApp.firestore();
+export {auth}

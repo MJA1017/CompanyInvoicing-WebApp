@@ -1,20 +1,36 @@
 <template>
-  <div v-if="invoicesLoaded">
-    <div v-if="!mobile" class="app flex flex-column">
-      <Navigation />
-      <div class="app-content flex flex-column">
-        <Modal v-if="modalActive" />
-        <transition name="invoice">
-          <InvoiceModal v-if="invoiceModal" />
-        </transition>
-        <router-view />
+  <!-- <div id="nav" v-if="$store.state.user"> -->
+    <div v-if="invoicesLoaded">
+
+      <div v-if="!mobile" class="app flex flex-column">
+
+        <div id="nav" v-if="$store.state.user">
+          <Navigation />
+        </div>
+
+        <div class="app-content flex flex-column">
+          <Modal v-if="modalActive" />
+          <transition name="invoice">
+            <InvoiceModal v-if="invoiceModal" />
+          </transition>
+          
+          <router-view />
+          <!-- <button @click="$store.dispatch('logout')">Logout</button> -->
+        </div>
       </div>
+
+
+      <div v-else class="mobile-message flex flex-column">
+        <h2>Sorry, this app is not supported on Mobile Devices</h2>
+        <p>To use this app, please use a computer or Tablet</p>
+      </div>
+
+      
     </div>
-    <div v-else class="mobile-message flex flex-column">
-      <h2>Sorry, this app is not supported on Mobile Devices</h2>
-      <p>To use this app, please use a computer or Tablet</p>
-    </div>
-  </div>
+
+  <!-- </div> -->
+  
+  
 </template>
 
 <script>
@@ -22,7 +38,17 @@ import { mapState, mapActions } from "vuex";
 import Navigation from "./components/Navigation";
 import InvoiceModal from "./components/InvoiceModal";
 import Modal from "./components/Modal";
+import { onBeforeMount } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
+  setup() {
+    const store = useStore()
+
+    onBeforeMount(() => {
+      store.dispatch('fetchUser')
+    })
+  },
   data() {
     return {
       mobile: null,
@@ -69,6 +95,7 @@ export default {
 .app {
   background-color: #141625;
   min-height: 100vh;
+  
   @media (min-width: 900px) {
     flex-direction: row !important;
   }
@@ -85,7 +112,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #141625;
+  background-color: #14251c;
   color: #fff;
 
   p {
@@ -117,7 +144,7 @@ button,
 }
 
 .dark-purple {
-  background-color: #252945;
+  background-color: #531d9a;
 }
 
 .red {
@@ -149,7 +176,7 @@ button,
 .container {
   width: 100%;
   padding: 40px 10px;
-  max-width: 850px;
+  max-width: 1400px;
   margin: 0 auto;
 
   @media (min-width: 900px) {

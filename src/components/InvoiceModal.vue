@@ -2,8 +2,14 @@
   <div @click="checkClick" ref="invoiceWrap" class="invoice-wrap flex flex-column">
     <form @submit.prevent="submitForm" class="invoice-content">
       <Loading v-show="loading" />
+      
       <h1 v-if="!editInvoice">New Invoice</h1>
+      
       <h1 v-else>Edit Invoice</h1>
+
+      <input type ="file" @change="onFileSelected">
+      <button @click="onUpload" >Upload</button>
+
 
       <!-- Bill From -->
       <div class="bill-from flex flex-column">
@@ -154,6 +160,7 @@ export default {
       invoiceDraft: null,
       invoiceItemList: [],
       invoiceTotal: 0,
+      selectedFile:null
     };
   },
   components: {
@@ -196,6 +203,13 @@ export default {
 
     ...mapActions(["UPDATE_INVOICE", "GET_INVOICES"]),
 
+    onFileSelected(event){
+      // console.log(event
+      this.selectedFile = event.target.files[0]
+    },
+    onUpload(){
+
+    },
     checkClick(e) {
       if (e.target === this.$refs.invoiceWrap) {
         this.TOGGLE_MODAL();
@@ -487,6 +501,7 @@ export default {
 
   .input {
     margin-bottom: 24px;
+    // align: left;
   }
 
   label {
