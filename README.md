@@ -1,5 +1,5 @@
 # invoice
-
+requires node version 12.16.0 (recommended) or any of version 12 variants
 ## Project setup
 ```
 npm install
