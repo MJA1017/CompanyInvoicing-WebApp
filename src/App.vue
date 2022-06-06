@@ -141,8 +141,12 @@ button,
   font-size: 12px;
   margin-right: 8px;
   color: #fff;
+  background-color: #33d69f;
 }
 
+.submit{
+  margin-left:40%;
+}
 .dark-purple {
   background-color: #531d9a;
 }

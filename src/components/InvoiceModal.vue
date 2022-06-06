@@ -1,22 +1,30 @@
 <template>
-  <div @click="checkClick" ref="invoiceWrap" class="invoice-wrap flex flex-column">
+  <div
+    @click="checkClick"
+    ref="invoiceWrap"
+    class="invoice-wrap flex flex-column"
+  >
     <form @submit.prevent="submitForm" class="invoice-content">
       <Loading v-show="loading" />
-      
+
       <h1 v-if="!editInvoice">New Invoice</h1>
-      
+
       <h1 v-else>Edit Invoice</h1>
 
-      <input type ="file" @change="onFileSelected">
-      <button @click="onUpload" >Upload</button>
-
+      <input type="file" @change="onFileSelected" />
+      <button @click="onUpload" class="submit">Upload</button>
 
       <!-- Bill From -->
       <div class="bill-from flex flex-column">
         <h4>Bill From</h4>
         <div class="input flex flex-column">
           <label for="billerStreetAddress">Street Address</label>
-          <input required type="text" id="billerStreetAddress" v-model="billerStreetAddress" />
+          <input
+            required
+            type="text"
+            id="billerStreetAddress"
+            v-model="billerStreetAddress"
+          />
         </div>
         <div class="location-details flex">
           <div class="input flex flex-column">
@@ -25,11 +33,21 @@
           </div>
           <div class="input flex flex-column">
             <label for="billerZipCode">Zip Code</label>
-            <input required type="text" id="billerZipCode" v-model="billerZipCode" />
+            <input
+              required
+              type="text"
+              id="billerZipCode"
+              v-model="billerZipCode"
+            />
           </div>
           <div class="input flex flex-column">
             <label for="billerCountry">Country</label>
-            <input required type="text" id="billerCountry" v-model="billerCountry" />
+            <input
+              required
+              type="text"
+              id="billerCountry"
+              v-model="billerCountry"
+            />
           </div>
         </div>
       </div>
@@ -47,7 +65,12 @@
         </div>
         <div class="input flex flex-column">
           <label for="clientStreetAddress">Street Address</label>
-          <input required type="text" id="clientStreetAddress" v-model="clientStreetAddress" />
+          <input
+            required
+            type="text"
+            id="clientStreetAddress"
+            v-model="clientStreetAddress"
+          />
         </div>
         <div class="location-details flex">
           <div class="input flex flex-column">
@@ -56,11 +79,21 @@
           </div>
           <div class="input flex flex-column">
             <label for="clientZipCode">Zip Code</label>
-            <input required type="text" id="clientZipCode" v-model="clientZipCode" />
+            <input
+              required
+              type="text"
+              id="clientZipCode"
+              v-model="clientZipCode"
+            />
           </div>
           <div class="input flex flex-column">
             <label for="clientCountry">Country</label>
-            <input required type="text" id="clientCountry" v-model="clientCountry" />
+            <input
+              required
+              type="text"
+              id="clientCountry"
+              v-model="clientCountry"
+            />
           </div>
         </div>
       </div>
@@ -70,11 +103,21 @@
         <div class="payment flex">
           <div class="input flex flex-column">
             <label for="invoiceDate">Invoice Date</label>
-            <input disabled type="text" id="invoiceDate" v-model="invoiceDate" />
+            <input
+              disabled
+              type="text"
+              id="invoiceDate"
+              v-model="invoiceDate"
+            />
           </div>
           <div class="input flex flex-column">
             <label for="paymentDueDate">Payment Due</label>
-            <input disabled type="text" id="paymentDueDate" v-model="paymentDueDate" />
+            <input
+              disabled
+              type="text"
+              id="paymentDueDate"
+              v-model="paymentDueDate"
+            />
           </div>
         </div>
         <div class="input flex flex-column">
@@ -86,7 +129,12 @@
         </div>
         <div class="input flex flex-column">
           <label for="productDescription">Product Description</label>
-          <input required type="text" id="productDescription" v-model="productDescription" />
+          <input
+            required
+            type="text"
+            id="productDescription"
+            v-model="productDescription"
+          />
         </div>
         <div class="work-items">
           <h3>Item List</h3>
@@ -97,12 +145,24 @@
               <th class="price">Price</th>
               <th class="total">Toal</th>
             </tr>
-            <tr class="table-items flex" v-for="(item, index) in invoiceItemList" :key="index">
-              <td class="item-name"><input type="text" v-model="item.itemName" /></td>
+            <tr
+              class="table-items flex"
+              v-for="(item, index) in invoiceItemList"
+              :key="index"
+            >
+              <td class="item-name">
+                <input type="text" v-model="item.itemName" />
+              </td>
               <td class="qty"><input type="text" v-model="item.qty" /></td>
               <td class="price"><input type="text" v-model="item.price" /></td>
-              <td class="total flex">${{ (item.total = item.qty * item.price) }}</td>
-              <img @click="deleteInvoiceItem(item.id)" src="@/assets/icon-delete.svg" alt="" />
+              <td class="total flex">
+                ${{ (item.total = item.qty * item.price) }}
+              </td>
+              <img
+                @click="deleteInvoiceItem(item.id)"
+                src="@/assets/icon-delete.svg"
+                alt=""
+              />
             </tr>
           </table>
 
@@ -116,12 +176,30 @@
       <!-- Save/Exit -->
       <div class="save flex">
         <div class="left">
-          <button type="button" @click="closeInvoice" class="red">Cancel</button>
+          <button type="button" @click="closeInvoice" class="red">
+            Cancel
+          </button>
         </div>
         <div class="right flex">
-          <button v-if="!editInvoice" type="submit" @click="saveDraft" class="dark-purple">Save Draft</button>
-          <button v-if="!editInvoice" type="submit" @click="publishInvoice" class="purple">Create Invoice</button>
-          <button v-if="editInvoice" type="sumbit" class="purple">Update Invoice</button>
+          <button
+            v-if="!editInvoice"
+            type="submit"
+            @click="saveDraft"
+            class="dark-purple"
+          >
+            Save Draft
+          </button>
+          <button
+            v-if="!editInvoice"
+            type="submit"
+            @click="publishInvoice"
+            class="purple"
+          >
+            Create Invoice
+          </button>
+          <button v-if="editInvoice" type="sumbit" class="purple">
+            Update Invoice
+          </button>
         </div>
       </div>
     </form>
@@ -133,6 +211,31 @@ import db from "../firebase/firebaseInit";
 import Loading from "../components/Loading";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { uid } from "uid";
+
+var data = "";
+
+// const axios = require("axios");
+// const fetch = require("node-fetch");
+
+// const headerss = {
+//   Authorization:
+//     "NODEFLUX-HMAC-SHA256 Credential=GRPPANRZ4M7FN7QERSSBS5XZS/20220531/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=d0936b1220dfa61a93c46c88a168d2d85b0465858745babd4b6e685c68b416c2",
+//   "content-type": "application/json",
+//   "x-nodeflux-timestamp": "20220531T121730Z",
+// };
+
+function base64_encode(file) {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    data = reader.result;
+    // console.log(data);
+  };
+  reader.onerror = function (error) {
+    console.log("Error: ", error);
+  };
+}
+
 export default {
   name: "invoiceModal",
   data() {
@@ -160,7 +263,7 @@ export default {
       invoiceDraft: null,
       invoiceItemList: [],
       invoiceTotal: 0,
-      selectedFile:null
+      selectedFile: null,
     };
   },
   components: {
@@ -170,7 +273,10 @@ export default {
     // get current date for invoice date field
     if (!this.editInvoice) {
       this.invoiceDateUnix = Date.now();
-      this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString("en-us", this.dateOptions);
+      this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString(
+        "en-us",
+        this.dateOptions
+      );
     }
 
     if (this.editInvoice) {
@@ -203,13 +309,58 @@ export default {
 
     ...mapActions(["UPDATE_INVOICE", "GET_INVOICES"]),
 
-    onFileSelected(event){
-      // console.log(event
-      this.selectedFile = event.target.files[0]
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0];
+      // console.log(this.selectedFile);
+      return this.selectedFile;
     },
-    onUpload(){
 
+    async onUpload() {
+      base64_encode(this.selectedFile);
+      // console.log(base64_encode(this.selectedFile));
+      const auth = await fetch("http://localhost:5000/api/nodeflux/authorization", {
+        method:"post",
+        body:JSON.stringify({access_key:"GRPPANRZ4M7FN7QERSSBS5XZS",secret_key:"kVqw5gODdstzEHyZ6ii-FGUqw5ec64uBLptSnf-uyzs1wndzvMPxugoeHsEBuvXh"}),
+        headers:{
+            "content-type": "application/json",
+            }
+      }).then((response)=>{return response.json()})
+      .then((response)=>{
+        console.log(response)
+        const DATE = response.headers['x-nodeflux-timestamp'].slice(0, 8)
+        const TOKEN = response.token
+        return {
+            "auth_key": `NODEFLUX-HMAC-SHA256 Credential=${"GRPPANRZ4M7FN7QERSSBS5XZS"}/${DATE}/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=${TOKEN}`,
+            "timestamp": response.headers['x-nodeflux-timestamp']
+      }})
+      
+      const doSomething = delay_amount_ms =>
+            new Promise(resolve => setTimeout(() => resolve("delay"), delay_amount_ms))
+
+      async function submit_api() {
+        //change to heroku link when u deploy
+        let status;
+        let result;
+        while (['success', 'incompleted'].includes(status) !== true) {
+          await doSomething()
+          result = await fetch("http://localhost:5000/ktp", {
+            method: "post",
+            body: JSON.stringify({ data: data }),
+            headers: {
+              "Authorization":auth.auth_key,
+              "content-type": "application/json",
+              "x-nodeflux-timestamp":auth.timestamp ,
+            }
+            
+          }).then((response) =>{ return response.json()})
+            .catch((err) => console.log(err));
+            status = result.job.result.status
+            console.log(result.job.result.result[0].agama)
+        }
+      }
+      submit_api();
     },
+
     checkClick(e) {
       if (e.target === this.$refs.invoiceWrap) {
         this.TOGGLE_MODAL();
@@ -234,7 +385,9 @@ export default {
     },
 
     deleteInvoiceItem(id) {
-      this.invoiceItemList = this.invoiceItemList.filter((item) => item.id !== id);
+      this.invoiceItemList = this.invoiceItemList.filter(
+        (item) => item.id !== id
+      );
     },
 
     calInvoiceTotal() {
@@ -351,8 +504,12 @@ export default {
   watch: {
     paymentTerms() {
       const futureDate = new Date();
-      this.paymentDueDateUnix = futureDate.setDate(futureDate.getDate() + parseInt(this.paymentTerms));
-      this.paymentDueDate = new Date(this.paymentDueDateUnix).toLocaleDateString("en-us", this.dateOptions);
+      this.paymentDueDateUnix = futureDate.setDate(
+        futureDate.getDate() + parseInt(this.paymentTerms)
+      );
+      this.paymentDueDate = new Date(
+        this.paymentDueDateUnix
+      ).toLocaleDateString("en-us", this.dateOptions);
     },
   },
 };
@@ -380,7 +537,8 @@ export default {
     width: 100%;
     background-color: #141625;
     color: #fff;
-    box-shadow: 10px 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 10px 4px 6px -1px rgba(0, 0, 0, 0.2),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
     h1 {
       margin-bottom: 48px;

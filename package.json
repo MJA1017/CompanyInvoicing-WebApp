@@ -1,20 +1,28 @@
 {
   "name": "invoice",
   "version": "0.1.0",
+  
+  "homepage": "http://localhost:8080/",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  
   "dependencies": {
+    "axios": "^0.27.2",
     "core-js": "^3.6.5",
     "firebase": "^9.8.2",
+    "http-proxy-middleware": "^2.0.6",
+    "node-fetch": "^3.2.5",
     "uid": "^2.0.0",
     "vue": "^3.0.11",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
   },
+  "proxy":"http://localhost:5000",
+
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
