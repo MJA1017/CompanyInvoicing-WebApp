@@ -57,7 +57,7 @@
         <h4>Bill To</h4>
         <div class="input flex flex-column">
           <label for="clientName">Client's Name</label>
-          <input required type="text" id="clientName" v-model="clientName" />
+          <input required type="text" id="clientName" v-model="clientName"/>
         </div>
         <div class="input flex flex-column">
           <label for="clientEmail">Client's Email</label>
@@ -70,6 +70,7 @@
             type="text"
             id="clientStreetAddress"
             v-model="clientStreetAddress"
+            
           />
         </div>
         <div class="location-details flex">
@@ -211,18 +212,14 @@ import db from "../firebase/firebaseInit";
 import Loading from "../components/Loading";
 import { mapActions, mapMutations, mapState } from "vuex";
 import { uid } from "uid";
+// import { useState } from '../composables/state';
 
 var data = "";
 
-// const axios = require("axios");
-// const fetch = require("node-fetch");
+// const [address,setAddress] = useState("");
+// const [city,setCity] = useState("");
+// const [country,setCountry] = useState("");
 
-// const headerss = {
-//   Authorization:
-//     "NODEFLUX-HMAC-SHA256 Credential=GRPPANRZ4M7FN7QERSSBS5XZS/20220531/nodeflux.api.v1beta1.ImageAnalytic/StreamImageAnalytic, SignedHeaders=x-nodeflux-timestamp, Signature=d0936b1220dfa61a93c46c88a168d2d85b0465858745babd4b6e685c68b416c2",
-//   "content-type": "application/json",
-//   "x-nodeflux-timestamp": "20220531T121730Z",
-// };
 
 function base64_encode(file) {
   var reader = new FileReader();
@@ -355,8 +352,19 @@ export default {
           }).then((response) =>{ return response.json()})
             .catch((err) => console.log(err));
             status = result.job.result.status
-            console.log(result.job.result.result[0].agama)
+          
         }
+        let l = JSON.stringify(result.job.result.result);
+        let withoutFirstAndLast = l.slice(1, -1);
+        // console.log(JSON.parse(withoutFirstAndLast).agama);
+        console.log(JSON.parse(withoutFirstAndLast).nama)
+        // console.log(this.clientName)
+        // this.clientName = JSON.parse(withoutFirstAndLast).nama
+        // console.log(this.clientName)
+        // setAddress(JSON.parse(withoutFirstAndLast).alamat)
+        // setCity(JSON.parse(withoutFirstAndLast).kabupaten_kota)
+        // setCountry(JSON.parse(withoutFirstAndLast).kewarganegaraan)
+
       }
       submit_api();
     },
