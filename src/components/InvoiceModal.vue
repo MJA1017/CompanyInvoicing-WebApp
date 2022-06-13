@@ -219,6 +219,9 @@ var data = "";
 // const [address,setAddress] = useState("");
 // const [city,setCity] = useState("");
 // const [country,setCountry] = useState("");
+var clientnama = "";
+var clientaddr = "";
+var clientkota = "";
 
 
 function base64_encode(file) {
@@ -268,6 +271,7 @@ export default {
   },
   created() {
     // get current date for invoice date field
+    
     if (!this.editInvoice) {
       this.invoiceDateUnix = Date.now();
       this.invoiceDate = new Date(this.invoiceDateUnix).toLocaleDateString(
@@ -355,18 +359,23 @@ export default {
           
         }
         let l = JSON.stringify(result.job.result.result);
+        console.log(result.job.result.result);
         let withoutFirstAndLast = l.slice(1, -1);
         // console.log(JSON.parse(withoutFirstAndLast).agama);
-        console.log(JSON.parse(withoutFirstAndLast).nama)
-        // console.log(this.clientName)
-        // this.clientName = JSON.parse(withoutFirstAndLast).nama
-        // console.log(this.clientName)
-        // setAddress(JSON.parse(withoutFirstAndLast).alamat)
-        // setCity(JSON.parse(withoutFirstAndLast).kabupaten_kota)
-        // setCountry(JSON.parse(withoutFirstAndLast).kewarganegaraan)
+        console.log(JSON.parse(withoutFirstAndLast).nama,JSON.parse(withoutFirstAndLast).alamat,JSON.parse(withoutFirstAndLast).kabupaten_kota)
+        clientnama = JSON.parse(withoutFirstAndLast).nama
+        clientaddr = JSON.parse(withoutFirstAndLast).alamat
+        clientkota = JSON.parse(withoutFirstAndLast).kabupaten_kota
+
+        // this.clientName = clientnama;
+        
 
       }
-      submit_api();
+      await submit_api();
+      this.clientName = clientnama;
+      this.clientStreetAddress = clientaddr;
+      this.clientCity = clientkota;
+      this.clientCountry = "INDONESIA";
     },
 
     checkClick(e) {
