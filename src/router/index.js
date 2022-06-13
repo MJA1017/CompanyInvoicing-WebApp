@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  if (to.matched.some(record => record.meta.requiresAuth) && !auth.currentUser) {
+  if (to.path != '/login' && !auth.currentUser) {
     next('/login')
     return;
   }

@@ -319,7 +319,7 @@ export default {
     async onUpload() {
       base64_encode(this.selectedFile);
       // console.log(base64_encode(this.selectedFile));
-      const auth = await fetch("http://localhost:5000/api/nodeflux/authorization", {
+      const auth = await fetch("https://proxyinvoice.herokuapp.com/api/nodeflux/authorization", {
         method:"post",
         body:JSON.stringify({access_key:"GRPPANRZ4M7FN7QERSSBS5XZS",secret_key:"kVqw5gODdstzEHyZ6ii-FGUqw5ec64uBLptSnf-uyzs1wndzvMPxugoeHsEBuvXh"}),
         headers:{
@@ -344,7 +344,7 @@ export default {
         let result;
         while (['success', 'incompleted'].includes(status) !== true) {
           await doSomething()
-          result = await fetch("http://localhost:5000/ktp", {
+          result = await fetch("https://proxyinvoice.herokuapp.com/ktp", {
             method: "post",
             body: JSON.stringify({ data: data }),
             headers: {
